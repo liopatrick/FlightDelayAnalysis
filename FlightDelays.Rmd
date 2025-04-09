@@ -1,0 +1,37 @@
+---
+title: "Flight Delay Analysis"
+output: 
+---
+
+# Load Dataset
+```{r}
+data <- read.csv("~/Downloads/flight_delays.csv", stringsAsFactors = FALSE)
+str(data)
+```
+
+```{r}
+# Research Question: What are the key factors that predict arrival delays?
+
+# initial multiple linear regression model.
+model_multiple <- lm(DelayMinutes ~ DelayReason + Origin + Destination + AircraftType + Airline + Cancelled + Distance + Diverted, data = data)
+summary(model_multiple)
+
+# Use stepwise regression to analyze predictors
+model_multiple_step <- step(model_multiple, direction = "both")
+summary(model_multiple_step)
+```
+
+```{r}
+# least variable model with strongest predictor
+model_least <- lm(DelayMinutes ~ DelayReason, data = data)
+summary(model_least)
+```
+
+```{r}
+# semi complete model
+model_optimal <- lm(DelayMinutes ~ DelayReason + Origin + AircraftType, data = data)
+
+# model with the best predictive power that includes key prescriptive variables
+summary(model_optimal)
+```
+
